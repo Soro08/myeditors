@@ -6,8 +6,6 @@ from bs4 import BeautifulSoup
 
 from cssjson import toJSON, toCSS
 
-# Create your views here.
-
 def home(request):
 
     return render(request, 'index.html')
@@ -42,4 +40,8 @@ def compilehtml(request):
         "css":codecss
     }
 
+
+
+    #stdout = StringIO.StringIO()
+   
     return JsonResponse(data)
