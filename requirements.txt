@@ -1,0 +1,5 @@
+beautifulsoup4==4.8.1
+cssjson==1.0.0
+Django==2.2.7
+pyphp==0.1
+
