@@ -9,7 +9,10 @@
 </head>
 <body>
     <div id="app" class="container-fluid">
-            <h1>Hello</h1>
+            <div>
+                <h3 class="text-muted text-center">{{ code.titre }}</h3>
+                <p class="text-center">{{ code.description }}</p>
+            </div>
             <div class="row">
                 <div class="col-md-6">
                         <editor style="width: 100%; height: 35vh" editor-id="editorA" :content="contentA" v-on:change-content="changeContentA" ></editor>
