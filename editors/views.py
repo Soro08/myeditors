@@ -32,18 +32,18 @@ def valid(element, html):
             correctehtml = False
     return (resultat, correctehtml)
 
-def compile(html, list_element, index):
-    element = list_element[index]
-    resultat, correcthmtl = valid(element, html)
-    index +=1
-    if 
-    :
-        while index < len(list_element):
-            if (list_element[index].niveau >= element.niveau):
-                break
-            else:
-                compile(resultat, list_element, index)
-    return co
+# def compile(html, list_element, index):
+#     element = list_element[index]
+#     resultat, correcthmtl = valid(element, html)
+#     index +=1
+#     if 
+#     :
+#         while index < len(list_element):
+#             if (list_element[index].niveau >= element.niveau):
+#                 break
+#             else:
+#                 compile(resultat, list_element, index)
+#     return co
 
 def home(request, id):
     code = models.Enonce.objects.get(pk=id)

@@ -3,4 +3,8 @@ cssjson==1.0.0
 Django==2.2.7
 pyphp==0.1
 requests
-
+jsondiff==1.2.0
+django-admin-generator==2.2.0
+django-tinymce4-lite==1.7.5
+django-filebrowser-no-grappelli==3.7.8
+Pillow==6.2.1

@@ -42,3 +42,7 @@ class ValidationHtml(models.Model):
     def __str__(self):
         """Unicode representation of ValidationHtml."""
         return self.balise
+
+
+
+

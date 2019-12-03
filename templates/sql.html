@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ace.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ext-language_tools.js"></script>
+    <title>Document</title>
+    <style>
+        body{
+            background-color: #35353530;
+        }
+        .card{
+            box-shadow: 3px 1px 0px 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid" id="app">
+        <div class="row">
+            <div class="col-md-6">
+                
+                <div class="btn-group">
+                    <button type="button" class="btn btn-dark"> ${ titrequestion }</button>
+                    <button type="button" class="btn btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
+                        <span class="caret"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        {% for item in question %}
+                            <a @click="getexo({{ item.pk }})" class="dropdown-item" href="#">Question {{ forloop.counter }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <hr>
+                <div class="card" style="height: 50vh;">
+                    <div class="card-body">
+                        <p class="text-muted">
+                            {{ exercice.description|safe }}
+                        </p>
+                    </div>
+                </div>
+                <div class="card" style="height: 10vh;">
+                    <div class="card-body">
+                        <p class="text-muted" v-html="question"></p>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="col-md-6">
+                <h3>Votre code ici</h3>
+                <hr>
+                <editor style="width: 100%; height: 60vh" editor-id="editorA" :content="contentA" v-on:change-content="changeContentA" ></editor>
+                <p>
+                    <button @click="sendcode" type="button" class="btn btn-default"> send</button>
+                    <img src="/static/30.gif" alt="" srcset="">
+                </p>
+                <hr>
+                <div v-if="valide" class="alert alert-success" role="alert">
+                    ${ message }
+                </div>
+                <div v-if="error" class="alert alert-danger" role="alert">
+                    ${ message }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <script>
+
+        Vue.component('Editor', {
+            template: '<div :id="editorId" style="width: 100%; height: 100%;"></div>',
+        props: ['editorId', 'content', 'lang', 'theme'],
+        data () {
+            return {
+            editor: Object,
+            beforeContent: '',
+            }
+        },
+        watch: {
+            'content' (value) {
+                if (this.beforeContent !== value) {
+                this.editor.setValue(value, 1)
+            }
+            }
+        },
+        mounted () {
+            var lang = this.langs || 'sql'
+            const theme = this.theme || 'cobalt'
+
+            this.editor = window.ace.edit(this.editorId)
+            this.editor.setValue(this.content, 1)
+        
+            // mode-xxx.js or theme-xxx.jsがある場合のみ有効
+            this.editor.getSession().setMode(`ace/mode/${lang}`)
+            this.editor.setTheme(`ace/theme/${theme}`)
+            this.editor.setOptions({
+                highlightActiveLine: true,
+                enableBasicAutocompletion: true,
+                enableSnippets: true,
+                enableLiveAutocompletion: true,
+                fontSize: "13pt"
+            });
+            this.editor.setShowPrintMargin(false);
+            this.editor.on('change', () => {
+                this.beforeContent = this.editor.getValue()
+            this.$emit('change-content', this.editor.getValue())
+            })
+        }
+        })
+        const app = new Vue({
+            el: "#app",
+            data () {
+                return {
+                    contentA: "",
+                    theme: 'cobalt',
+                    langs: 'sql',
+                    site_url : window.location.protocol + "//" + window.location.host + '/',
+                    send : false,
+                    message: "",
+                    valide : false,
+                    error : false,
+
+                    exoid : 1,
+                    titrequestion:"question",
+                    question:"Choisir une question",
+                    codedepart:"",
+                }
+            },
+            delimiters:["${", "}"],
+            mounted (){
+                this.codehtml = this.contentA + this.contentB;
+                lang = "css"
+                this.contentA = this.codedepart
+            },
+            methods: {
+                reset () {
+                    this.contentA = 'reset content for Editor A'
+                    this.contentB = 'reset content for Editor B'
+            
+                },
+                init: function(){
+                    this.error = this.valide = false
+                },
+
+                changeContentA (val) {
+                    if (this.contentA !== val) {
+                        this.contentA = val
+                        
+                    
+                    }
+                },
+                getcontentA(){
+                    console.log(this.contentA)
+                },
+
+                sendcode: function(){
+                    this.init();
+                    this.send = true;
+                    console.log(this.contentA)
+
+                    axios.defaults.xsrfCookieName = 'csrftoken'
+                    axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+
+                    let formData = new FormData();
+                    formData.append('code', '' + this.contentA);
+                    formData.append('exoid', ''+ this.exoid)
+
+                    axios.post(this.site_url + 'sql/compile',formData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    }).then(response => {
+                        result = response.data
+                        console.log(result);
+                        this.valide = result.status
+                        if (result.status == false){
+                            this.error = true
+                        }
+                        this.message = result.message
+                        this.send = false;
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        this.send = false;
+                    })
+                },
+
+                getexo: function(exo){
+
+                    this.exoid = exo
+                    axios.defaults.xsrfCookieName = 'csrftoken'
+                    axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+
+                    let formData = new FormData();
+                    formData.append('exoid', '' + this.exoid);
+
+                    axios.post(this.site_url + 'sql/getexo',formData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    }).then(response => {
+                        result = response.data[0].fields
+                        this.question = result.enonce
+                        this.titrequestion = result.titre
+                        this.codedepart = result.codesql_depart
+                        this.contentA = this.codedepart
+                        this.send = false;
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        this.send = false;
+                    })
+                }
+    
+            }
+        })
+    </script>
+</body>
+</html>
