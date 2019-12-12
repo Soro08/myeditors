@@ -13,10 +13,14 @@
     <style>
         body{
             background-color: #35353530;
+            background-image: url(http://karenmenezes.com/shapes-polygon/bg-cubes.png);
         }
         .card{
-            box-shadow: 3px 1px 0px 1px;
+            box-shadow: 5px 5px 30px 7px rgba(0,0,0,0.25), -5px -5px 30px 7px rgba(0,0,0,0.22);
+            overflow: scroll;
         }
+        .container{height:100%}
+  
     </style>
 </head>
 <body>
@@ -55,8 +59,8 @@
                 <hr>
                 <editor style="width: 100%; height: 60vh" editor-id="editorA" :content="contentA" v-on:change-content="changeContentA" ></editor>
                 <p>
-                    <button @click="sendcode" type="button" class="btn btn-default"> send</button>
-                    <img src="/static/30.gif" alt="" srcset="">
+                    <button v-if="!send" @click="sendcode" type="button" class="btn btn-dark"> send</button>
+                    <img v-if="send" src="/static/30.gif" alt="" srcset="">
                 </p>
                 <hr>
                 <div v-if="valide" class="alert alert-success" role="alert">
@@ -67,11 +71,32 @@
                 </div>
             </div>
         </div>
+        <div class="container">
+                <div class="ui-layout-center">Center</div>
+                <div class="ui-layout-east">East</div>
+                <div class="ui-layout-west">West</div>
+        
+                </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-layout/1.4.3/jquery.layout_and_plugins.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('.container').layout({
+                west: {
+                resizable: true,
+                resizeWhileDragging: true,
+                slidable:true
+    
+            }});
+        });
+    </script>
 
     <script>
 
@@ -123,7 +148,6 @@
                     theme: 'cobalt',
                     langs: 'sql',
                     site_url : window.location.protocol + "//" + window.location.host + '/',
-                    send : false,
                     message: "",
                     valide : false,
                     error : false,
@@ -132,6 +156,7 @@
                     titrequestion:"question",
                     question:"Choisir une question",
                     codedepart:"",
+                    send:false,
                 }
             },
             delimiters:["${", "}"],
@@ -147,7 +172,7 @@
             
                 },
                 init: function(){
-                    this.error = this.valide = false
+                    this.error = this.valide = this.send = false
                 },
 
                 changeContentA (val) {
