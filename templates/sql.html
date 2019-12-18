@@ -16,7 +16,7 @@
             background-image: url(http://karenmenezes.com/shapes-polygon/bg-cubes.png);
         }
         .card{
-            box-shadow: 5px 5px 30px 7px rgba(0,0,0,0.25), -5px -5px 30px 7px rgba(0,0,0,0.22);
+            /* box-shadow: 5px 5px 30px 7px rgba(0,0,0,0.25), -5px -5px 30px 7px rgba(0,0,0,0.22); */
             overflow: scroll;
         }
         .container{height:100%}
@@ -64,6 +64,22 @@
                 <hr>
                 <div v-if="valide" class="alert alert-success" role="alert">
                     ${ message }
+                    <hr>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                            <th v-for="head in resultat.codeuser.COLUMNS"> ${ head } </th>
+                            
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="trd in resultat.codeuser.DATA">
+                                <td v-for="tdd in trd">${ tdd }</td>
+                                
+                            </tr>
+                            
+                        </tbody>
+                    </table>
                 </div>
                 <div v-if="error" class="alert alert-danger" role="alert">
                     ${ message }
@@ -157,6 +173,9 @@
                     codedepart:"",
                     send:false,
                     exoids:1,
+                    resultat : null,
+
+
                 }
             },
             delimiters:["${", "}"],
@@ -211,6 +230,7 @@
                     }).then(response => {
                         result = response.data
                         console.log(result);
+                        this.resultat = result
                         this.valide = result.status
                         if (result.status == false){
                             this.error = true
