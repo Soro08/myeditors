@@ -23,9 +23,12 @@ class Exercices(models.Model):
 
     # TODO: Define fields here
     titre = models.CharField(max_length=250)
+    minidescription = models.TextField(null=True)
     description = HTMLField('Content')
     codesql_creation = models.TextField()
     quiz = models.ForeignKey(Quizz, on_delete=models.CASCADE, related_name="exoquiz")
+    
+    status = models.BooleanField(default=True)
 
     class Meta:
         """Meta definition for Exercices."""

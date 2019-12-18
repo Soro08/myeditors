@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+    <title>Document</title>
+    <style>
+        body{
+            background-color: #35353530;
+            background-image: url(http://karenmenezes.com/shapes-polygon/bg-cubes.png);
+        }
+        /* .card{
+            box-shadow: 5px 5px 30px 7px rgba(0,0,0,0.25), -5px -5px 30px 7px rgba(0,0,0,0.22);
+            overflow: scroll;
+        }
+        .container{height:100%}
+   */
+    </style>
+</head>
+<body>
+    <div class="container mt-5" id="app">
+
+        <h3 class="text-center mb-2">Liste des TP Sql</h3>
+        <hr>
+        <div class="row">
+            
+            {% for exo in exos %}
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-block">
+                            <h4 class="card-title">{{ exo.titre }}</h4>
+                            <p class="card-text">{{ exo.minidescription }}</p>
+                            <a href="{% url 'home' exo.pk %}" class="card-link">resoudre</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+        
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-layout/1.4.3/jquery.layout_and_plugins.min.js"></script>
+
+
+</body>
+</html>

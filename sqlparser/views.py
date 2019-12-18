@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from . import models
 from django.core import serializers
 # Create your views here.
@@ -18,17 +18,28 @@ builde_url = "http://sqlfiddle.com/backend/createSchema?_action=create"
 
 compile_url = "http://sqlfiddle.com/backend/executeQuery?_action=query"
 
+def accueil(request):
+    exo = models.Exercices.objects.filter(status = True)
+    
+    data = {
+        'exos':exo
+    }
+    return render(request, 'home.html', data)
+
 def compilesql(request):
 
     exoid = request.POST.get('exoid')
+    exoids = request.POST.get('exoids')
     codeuserresult = None
     codeadminresult = None
     message = ""
     status = False
+    compt = 0
     try:
         exoid = int(exoid) 
+        exoids = int(exoids) 
 
-        exo = models.Exercices.objects.get(pk = 1)
+        exo = models.Exercices.objects.get(pk = exoids)
         quests = models.Questions.objects.get(pk = exoid)
         
 
@@ -103,8 +114,6 @@ def compilesql(request):
             message = reponse_user['sets'][0]['ERRORMESSAGE']
 
 
-
-
     except:
         message = "Erreur de compilation"
 
@@ -121,14 +130,18 @@ def compilesql(request):
     return JsonResponse(data=data, safe=False)
 
 
-def home(request):
-    exercice = models.Exercices.objects.get(pk=1)
-    question = models.Questions.objects.all()
-    data = {
-        'question':question,
-        'exercice':exercice
-    }
-    return render(request, 'sql.html', data)
+def home(request, key):
+    try:
+        exercice = models.Exercices.objects.get(pk=key)
+        question = models.Questions.objects.filter(exercice = exercice)
+        data = {
+            'question':question,
+            'exercice':exercice,
+            'exoid':key,
+        }
+        return render(request, 'sql.html', data)
+    except:
+        redirect('/')
 
 
 def getexo(request):

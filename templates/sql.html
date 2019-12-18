@@ -27,7 +27,6 @@
     <div class="container-fluid" id="app">
         <div class="row">
             <div class="col-md-6">
-                
                 <div class="btn-group">
                     <button type="button" class="btn btn-dark"> ${ titrequestion }</button>
                     <button type="button" class="btn btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
@@ -157,13 +156,17 @@
                     question:"Choisir une question",
                     codedepart:"",
                     send:false,
+                    exoids:1,
                 }
             },
             delimiters:["${", "}"],
             mounted (){
                 this.codehtml = this.contentA + this.contentB;
                 lang = "css"
-                this.contentA = this.codedepart
+                this.contentA = this.codedepart,
+                this.exoids = {{ exoid }},
+
+                console.log(this.exoid);
             },
             methods: {
                 reset () {
@@ -196,7 +199,9 @@
 
                     let formData = new FormData();
                     formData.append('code', '' + this.contentA);
-                    formData.append('exoid', ''+ this.exoid)
+                    formData.append('exoid', ''+ this.exoid);
+                    formData.append('exoids', ''+ this.exoids);
+
 
                     axios.post(this.site_url + 'sql/compile',formData,
                     {
@@ -220,7 +225,7 @@
                 },
 
                 getexo: function(exo){
-
+                    this.init()
                     this.exoid = exo
                     axios.defaults.xsrfCookieName = 'csrftoken'
                     axios.defaults.xsrfHeaderName = 'X-CSRFToken'
