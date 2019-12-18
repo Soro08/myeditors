@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from . import models
 from django.core import serializers
 # Create your views here.
-
+from django.views.decorators.csrf import csrf_exempt
 ####### Json responde
 from django.http import JsonResponse
 ####### Parser
@@ -26,6 +26,7 @@ def accueil(request):
     }
     return render(request, 'home.html', data)
 
+@csrf_exempt
 def compilesql(request):
 
     exoid = request.POST.get('exoid')
@@ -144,6 +145,7 @@ def home(request, key):
         redirect('/')
 
 
+@csrf_exempt
 def getexo(request):
     exoid = request.POST.get("exoid")
     question = models.Questions.objects.get(pk = exoid)
