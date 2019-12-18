@@ -25,7 +25,7 @@ SECRET_KEY = 'xh_!hl1_)!*5p4w%_dqlzw2e7r$m-yeu83qwkk#$w*u3ghr@j5'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'ibra-sqleditor.herokuapp']
 
 
 # Application definition
