@@ -1,0 +1,146 @@
+
+/* ******** link google font ******** */
+
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+
+/* General code*/
+
+:root{
+    --p-color_form : #f4f4f4;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+html{
+    font-size: 62.5%;
+}
+
+body{
+    font-family: 'Roboto', sans-serif;
+    box-sizing: border-box;
+    background: #00000009;
+}
+
+
+/* secondary code*/
+
+.general-box{
+    min-height: 75vh;
+}
+
+.my-box-card{
+    width: 100%;
+    position: relative;
+    border: 1px solid #767ffe;
+    z-index: 1;
+    padding: 1rem;
+    box-shadow: 0 1px 20px rgba(0, 0, 0, 0.089);
+    margin-bottom: 2rem;
+    transition: all .4s;
+    box-shadow: 0 1px 6px 0 rgba(32, 33, 36, 0.171);
+}
+
+.my-box-card:hover{
+    transform: translateY(-1.5%);
+    box-shadow: 0 1px 20px rgba(32, 33, 36, 0.247);
+}
+
+.box-title{
+    cursor: pointer;
+    background: #767ffe;
+    color: white;
+    padding: 1rem;
+    position: absolute;
+    left: -5%;
+    top: 1.7rem;
+    width: 100%;
+    border: none;
+    box-shadow: 0 1px 20px #767ffe8a;
+    z-index: 2;
+    border-radius: 7px;
+    transition: all .2s;
+}
+
+.box-title:hover{
+    transform: scale(1.04);
+}
+
+.content{
+    padding-top: 7rem;
+}
+
+.content h4{
+    margin-bottom: 1.2rem;
+}
+.content p{
+    font-size: 1.3rem;
+}
+
+.submit-btn{
+    color: #767ffe;
+    background: transparent;
+    border: 1px solid #767ffe;
+    font-size: 1.3rem;
+    padding: .3rem 1.5rem;
+    cursor: pointer;
+    outline: none;
+    transition: all .2s;
+}
+
+.submit-btn:focus{
+    outline-color: #767ffe;
+}
+
+.submit-btn:hover{
+    color: white;
+    background: #767ffe;
+}
+
+/*  */
+
+.general-box{
+    margin: 3rem;
+}
+
+.s-title{
+    text-transform: uppercase;
+}
+
+.divider{
+    width: 70%;
+    margin: auto;
+}
+
+
+/* ***********   Footer ************* */
+
+footer{
+    background: #0d0e1c;
+    color: #e2e4f5;
+    padding: 6rem 0;
+}
+
+.s-ul_footer{
+    margin-bottom: 1rem;
+}
+
+.s-ul_footer li{
+    list-style: none;
+    display: inline;
+    padding: 0 .7rem;
+}
+
+.s-ul_footer img{
+    height: 3.4rem;
+}
+
+footer h6{
+    font-size: 1.5rem;
+}
+
+
