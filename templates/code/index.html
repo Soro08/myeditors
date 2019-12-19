@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- cdn css -->
+    <link rel="stylesheet" href="/static/code/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/code/css/style.css">
+    <title>form connect</title>
+</head>
+<body>
+    <div class="general-box">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-5"> 
+                    <h1 class="s-title"> Liste des TP sql </h1> 
+                    <hr class="divider">
+                </div>
+                {% for exo in exos %}
+                <!-- card box 1 -->
+                <div class="col-12 col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                    <div class="my-box-card">
+                        <div class="box-title">
+                            <h3>TP {{ forloop.counter }} : {{ exo.titre }} </h3>
+                        </div>
+                        <div class="content">
+                            <h4>Description:</h4>
+                            <p>{{ exo.minidescription }}</p>
+                        </div>
+                        <a href="{% url 'home' exo.pk %}">
+                            <button class="submit-btn">resoudre</button>
+                        </a>
+                    </div>
+                </div> <!-- end card box 1 -->
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <ul class="s-ul_footer">
+                        <li>
+                            <a href="https://web.facebook.com/ecolenan/" target="_blank">
+                                <img src="/static/code/images/flaticon/facebook.svg" alt="logo facebook" class="img-fluid">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://fr.linkedin.com/school/nan-not-a-number/" target="_blank">
+                                <img src="/static/code/images/flaticon/linkedin.svg" alt="logo linkedin" class="img-fluid">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/channel/UCWB0VDT_tMZ-xOkvjFvlUnw" target="_blank">
+                                <img src="/static/code/images/flaticon/youtube.svg" alt="logo youtube" class="img-fluid">
+                            </a>
+                        </li>
+                    </ul>
+                    <h6>Tous droits reservés - <a href="https://nan.ci">NaN</a></h6>
+                    <h6>Copyright &copy; 2019-2020 DevsFront</h6>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- cdn jquery et javascript -->
+    <script src="/static/code/js/jquery.min.js"></script>
+    <script src="/static/code/js/bootstrap.min.js"></script>
+</body>
+</html>
