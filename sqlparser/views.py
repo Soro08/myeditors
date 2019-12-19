@@ -24,7 +24,7 @@ def accueil(request):
     data = {
         'exos':exo
     }
-    return render(request, 'home.html', data)
+    return render(request, 'code/index.html', data)
 
 @csrf_exempt
 def compilesql(request):
@@ -36,6 +36,7 @@ def compilesql(request):
     message = ""
     status = False
     compt = 0
+    is_user_true =False
     try:
         exoid = int(exoid) 
         exoids = int(exoids) 
@@ -108,6 +109,7 @@ def compilesql(request):
                 status = True
             else:
                 status = False
+                is_user_true = True
                 message = "La requeste saisie ne correspond pas"
 
 
@@ -123,6 +125,7 @@ def compilesql(request):
 
     data = {
         'status':status,
+        'is_user':is_user_true,
         'message':message,
         'compt':compt,
         'codeuser':codeuserresult,
@@ -140,7 +143,7 @@ def home(request, key):
             'exercice':exercice,
             'exoid':key,
         }
-        return render(request, 'sql.html', data)
+        return render(request, 'code/sql.html', data)
     except:
         redirect('/')
 
