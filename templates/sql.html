@@ -9,14 +9,14 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ace.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ext-language_tools.js"></script>
-    <title>Document</title>
+    <title>My Sql Editor 1.0</title>
     <style>
         body{
             background-color: #35353530;
-            background-image: url(http://karenmenezes.com/shapes-polygon/bg-cubes.png);
+            background-image: url(https://ibra-sqleditor.herokuapp.com/static/bg-cubes.png);
         }
         .card{
-            box-shadow: 5px 5px 30px 7px rgba(0,0,0,0.25), -5px -5px 30px 7px rgba(0,0,0,0.22);
+            /* box-shadow: 5px 5px 30px 7px rgba(0,0,0,0.25), -5px -5px 30px 7px rgba(0,0,0,0.22); */
             overflow: scroll;
         }
         .container{height:100%}
@@ -27,7 +27,6 @@
     <div class="container-fluid" id="app">
         <div class="row">
             <div class="col-md-6">
-                
                 <div class="btn-group">
                     <button type="button" class="btn btn-dark"> ${ titrequestion }</button>
                     <button type="button" class="btn btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
@@ -65,6 +64,22 @@
                 <hr>
                 <div v-if="valide" class="alert alert-success" role="alert">
                     ${ message }
+                    <hr>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                            <th v-for="head in resultat.codeuser.COLUMNS"> ${ head } </th>
+                            
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="trd in resultat.codeuser.DATA">
+                                <td v-for="tdd in trd">${ tdd }</td>
+                                
+                            </tr>
+                            
+                        </tbody>
+                    </table>
                 </div>
                 <div v-if="error" class="alert alert-danger" role="alert">
                     ${ message }
@@ -157,13 +172,20 @@
                     question:"Choisir une question",
                     codedepart:"",
                     send:false,
+                    exoids:1,
+                    resultat : null,
+
+
                 }
             },
             delimiters:["${", "}"],
             mounted (){
                 this.codehtml = this.contentA + this.contentB;
                 lang = "css"
-                this.contentA = this.codedepart
+                this.contentA = this.codedepart,
+                this.exoids = {{ exoid }},
+
+                console.log(this.exoid);
             },
             methods: {
                 reset () {
@@ -196,7 +218,9 @@
 
                     let formData = new FormData();
                     formData.append('code', '' + this.contentA);
-                    formData.append('exoid', ''+ this.exoid)
+                    formData.append('exoid', ''+ this.exoid);
+                    formData.append('exoids', ''+ this.exoids);
+
 
                     axios.post(this.site_url + 'sql/compile',formData,
                     {
@@ -206,6 +230,7 @@
                     }).then(response => {
                         result = response.data
                         console.log(result);
+                        this.resultat = result
                         this.valide = result.status
                         if (result.status == false){
                             this.error = true
@@ -220,7 +245,7 @@
                 },
 
                 getexo: function(exo){
-
+                    this.init()
                     this.exoid = exo
                     axios.defaults.xsrfCookieName = 'csrftoken'
                     axios.defaults.xsrfHeaderName = 'X-CSRFToken'
