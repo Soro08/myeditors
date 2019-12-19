@@ -1,6 +1,6 @@
 beautifulsoup4==4.8.1
 cssjson==1.0.0
-Django==2.2.7
+Django==2.2.8
 pyphp==0.1
 requests
 jsondiff==1.2.0
