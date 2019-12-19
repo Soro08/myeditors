@@ -85,10 +85,18 @@ DATABASES = {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     # }
+    # 'default': {
+    #     'ENGINE': 'djongo',
+    #     'NAME': 'myeditor',
+    #     'HOST': '51.77.197.177',
+    # }
     'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'myeditor',
-        'HOST': '51.77.197.177',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'db_nansql',
+        'USER': 'nansql',
+        'PASSWORD': 'nan2019',
+        'HOST': '51.77.197.188',
+        'PORT': '5432',
     }
     
 }
