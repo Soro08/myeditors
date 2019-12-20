@@ -379,7 +379,7 @@
                         <span v-if="error" class="console">
                                 ${ message }
                                 <br>
-                                <p v-if="error_user" class="console">
+                                <span v-if="error_user">
                                     <span>Votre requêtte retourne :</span> <br>
                                     <table class="table table-hover">
                                         <thead>
@@ -411,7 +411,7 @@
                                             
                                         </tbody>
                                     </table>
-                                </p>
+                                </span>
             
                             
                         </span>
