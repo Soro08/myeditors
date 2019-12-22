@@ -25,6 +25,7 @@ class QuestionsAdmin(admin.ModelAdmin):
         'titre',
         'enonce',
         'point',
+        'type_de_requete',
         'exercice',
     )
     list_filter = (

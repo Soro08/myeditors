@@ -41,11 +41,19 @@ class Exercices(models.Model):
         return self.titre
 
 class Questions(models.Model):
+    QUERY_TYPE = [
+        (1, 'Query'),
+        (2, 'Mutation'),
+    ]
     """Model definition for Questions."""
     titre = models.CharField(max_length=250)
     enonce = models.TextField()
     codesql_depart = models.TextField()
     codesql_reponse = models.TextField()
+    ###### SPECIFICATION ET MUTATION
+    type_de_requete = models.IntegerField(choices=QUERY_TYPE, default=1, help_text='Ici on a deux type de reque: <br />Query pour les requete de type SELECT. <br />Mutation pour les requete de type UPDATE, ADD, DELETE')
+    code_de_verification = models.TextField(null=True, blank=True, help_text='Ici on ajoute le code sql de verification.<br />Exemple: select * from table <br />Cela nous permet de voir si le candidat  a supprimer, modifier ou ajouté la colene  ')
+    
     point = models.PositiveIntegerField()
     exercice = models.ForeignKey(Exercices, on_delete=models.CASCADE, related_name="questexo")
     # TODO: Define fields here
