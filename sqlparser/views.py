@@ -44,77 +44,167 @@ def compilesql(request):
         exo = models.Exercices.objects.get(pk = exoids)
         quests = models.Questions.objects.get(pk = exoid)
         
-
-
         ############ CODE USER ############
         codeuser = request.POST.get('code')
+        
+        if quests.type_de_requete == 2:
+            print("mutation")
+            
+            ####### Table admin
+            code_sql_admin = exo.codesql_creation + '\n' + quests.codesql_reponse
+            code_sql_user = exo.codesql_creation + '\n' + codeuser
+            
 
-        ###### CREATE TABLE BEGIN
-        code_sal_table = exo.codesql_creation
-        data_create_table = {
-            "db_type_id": 9,
-            "ddl": code_sal_table,
-            "statement_separator": ";"
-        }
+            
+            ######## CREATE TABLE ADMIN
+            
+            data_create_table_admin = {
+                "db_type_id": 9,
+                "ddl": code_sql_admin,
+                "statement_separator": ";"
+            }
 
-        req_create_table = requests.post(builde_url, json=data_create_table)
-                
-        reponse_create_table = json.loads(req_create_table.text)
+            req_create_table = requests.post(builde_url, json=data_create_table_admin)
+                    
+            reponse_create_table = json.loads(req_create_table.text)
 
-        id_table_create = reponse_create_table['short_code']
+            id_table_create_admin = reponse_create_table['short_code']
+            
+            
+            ############ CREATE TABLE USER
+            
+            data_create_table_user = {
+                "db_type_id": 9,
+                "ddl": code_sql_user,
+                "statement_separator": ";"
+            }
+
+            req_create_table = requests.post(builde_url, json=data_create_table_user)
+                    
+            reponse_create_table = json.loads(req_create_table.text)
+
+            id_table_create_user = reponse_create_table['short_code']
+            
+            
+            ############ COMPILE CODE
+                    ############ TEST CODE ###############
 
 
-    ############ TEST CODE ###############
-        compt = 0
+            code_admin_cerify = quests.code_de_verification
 
 
-        codeuser_admin = quests.codesql_reponse
+            ########### COMPILE RESULT USRT
+            data_compile = {
+                "db_type_id": 9,
+                "schema_short_code": id_table_create_user,
+                "sql": code_admin_cerify,
+                "statement_separator": ";",
+            }
 
-        ######## CRETE TABLE END
-        print(id_table_create)
+            req_user = requests.post(compile_url, json = data_compile)
 
-        ########### COMPILE RESULT USRT
-        id_table = id_table_create
-        data_compile = {
-            "db_type_id": 9,
-            "schema_short_code": id_table,
-            "sql": codeuser,
-            "statement_separator": ";",
-        }
+            reponse_user = json.loads(req_user.text)
 
-        req_user = requests.post(compile_url, json = data_compile)
+            ######## ADMIN COMPILE
+            data_compile_nan = {
+                "db_type_id": 9,
+                "schema_short_code": id_table_create_admin,
+                "sql": code_admin_cerify,
+                "statement_separator": ";",
+            }
 
-        reponse_user = json.loads(req_user.text)
+            req_admin = requests.post(compile_url, json = data_compile_nan)
 
-        ######## ADMIN COMPILE
-        data_compile_nan = {
-            "db_type_id": 9,
-            "schema_short_code": id_table,
-            "sql": codeuser_admin,
-            "statement_separator": ";",
-        }
+            reponse_admin = json.loads(req_admin.text)
 
-        req_admin = requests.post(compile_url, json = data_compile_nan)
+            admin_resullt = reponse_admin['sets'][0]['RESULTS']
+            codeadminresult = admin_resullt
 
-        reponse_admin = json.loads(req_admin.text)
+            status = reponse_user['sets'][0]['SUCCEEDED']
+            if status:
+                user_result = reponse_user['sets'][0]['RESULTS']
+                codeuserresult = user_result
+                if len(diff(admin_resullt, user_result)) == 0:
+                    status = True
+                else:
+                    status = False
+                    is_user_true = True
+                    message = "La requeste saisie ne correspond pas"
 
-        admin_resullt = reponse_admin['sets'][0]['RESULTS']
-        codeadminresult = admin_resullt
 
-        status = reponse_user['sets'][0]['SUCCEEDED']
-        if status:
-            user_result = reponse_user['sets'][0]['RESULTS']
-            codeuserresult = user_result
-            if len(diff(admin_resullt, user_result)) == 0:
-                status = True
             else:
-                status = False
-                is_user_true = True
-                message = "La requeste saisie ne correspond pas"
-
-
+                message = reponse_user['sets'][0]['ERRORMESSAGE']
+            
+            
         else:
-            message = reponse_user['sets'][0]['ERRORMESSAGE']
+            
+
+            ###### CREATE TABLE BEGIN
+            code_sal_table = exo.codesql_creation
+            data_create_table = {
+                "db_type_id": 9,
+                "ddl": code_sal_table,
+                "statement_separator": ";"
+            }
+
+            req_create_table = requests.post(builde_url, json=data_create_table)
+                    
+            reponse_create_table = json.loads(req_create_table.text)
+
+            id_table_create = reponse_create_table['short_code']
+
+
+        ############ TEST CODE ###############
+            compt = 0
+
+
+            codeuser_admin = quests.codesql_reponse
+
+            ######## CRETE TABLE END
+            print(id_table_create)
+
+            ########### COMPILE RESULT USRT
+            id_table = id_table_create
+            data_compile = {
+                "db_type_id": 9,
+                "schema_short_code": id_table,
+                "sql": codeuser,
+                "statement_separator": ";",
+            }
+
+            req_user = requests.post(compile_url, json = data_compile)
+
+            reponse_user = json.loads(req_user.text)
+
+            ######## ADMIN COMPILE
+            data_compile_nan = {
+                "db_type_id": 9,
+                "schema_short_code": id_table,
+                "sql": codeuser_admin,
+                "statement_separator": ";",
+            }
+
+            req_admin = requests.post(compile_url, json = data_compile_nan)
+
+            reponse_admin = json.loads(req_admin.text)
+
+            admin_resullt = reponse_admin['sets'][0]['RESULTS']
+            codeadminresult = admin_resullt
+
+            status = reponse_user['sets'][0]['SUCCEEDED']
+            if status:
+                user_result = reponse_user['sets'][0]['RESULTS']
+                codeuserresult = user_result
+                if len(diff(admin_resullt, user_result)) == 0:
+                    status = True
+                else:
+                    status = False
+                    is_user_true = True
+                    message = "La requeste saisie ne correspond pas"
+
+
+            else:
+                message = reponse_user['sets'][0]['ERRORMESSAGE']
 
 
     except:
