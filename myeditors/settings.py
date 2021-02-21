@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'xh_!hl1_)!*5p4w%_dqlzw2e7r$m-yeu83qwkk#$w*u3ghr@j5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'ibra-sqleditor.herokuapp.com']
 
@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -81,15 +82,6 @@ WSGI_APPLICATION = 'myeditors.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    # }
-    # 'default': {
-    #     'ENGINE': 'djongo',
-    #     'NAME': 'myeditor',
-    #     'HOST': '51.77.197.177',
-    # }
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'db_nansql',
@@ -166,6 +158,8 @@ TINYMCE_DEFAULT_CONFIG = {
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'

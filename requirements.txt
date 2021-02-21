@@ -13,3 +13,4 @@ django-admin-interface==0.12.0
 psycopg2==2.8.4
 gunicorn
 django-heroku
+whitenoise
